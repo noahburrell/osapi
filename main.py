@@ -10,7 +10,7 @@ import config
 # INGEST PARAMETERS
 parser = argparse.ArgumentParser("Perform operations on a user's network/s.")
 
-parser.add_argument('-n', type=str, help='Create a new subnet with the specified name')
+parser.add_argument('-n', type=str, help='Create a new subnet with the specified name (-N usage required')
 parser.add_argument('-N', type=str, help='Used in conjunction with -n to override the network address (use CIDR notation')
 
 parser.add_argument('USER_ID', type=str, help='ID of user the operations will be preformed on')
@@ -18,6 +18,8 @@ parser.add_argument('USER_ID', type=str, help='ID of user the operations will be
 args = parser.parse_args()
 
 # uid = "1"  # Debugging
+args.n = "test-network"  # Debugging
+args.N = "192.168.100.0/24"  # Debugging
 
 # SETUP
 # Get X-Auth-Token
@@ -48,8 +50,8 @@ else:
 print "Router ID is: "+routerID
 
 # Attempt to create a network using the specified name and network address (if applicable)
-if args.n is not None:
-    result = operations.createNetwork(args.USER_ID, args.n, args.N)
+if args.n is not None and args.N is not None:
+    result = operations.createNetwork(args.USER_ID, routerID, args.n, args.N)
 
 '''
 # CREATE NETWORK

@@ -39,6 +39,12 @@ def createRouter(uid, pubnet, pubsub):
         return None
 
 
-def createNetwork(uid, name, ):
+def createNetwork(uid, osrid, name, network):
+    netResult = newNetwork(name)
+
+    subnetResult = newSubnet(netResult['network']['id'], network)
+
+    portResult = newRouterPort(osrid, subnetResult['subnet']['id'])
+
     return
 

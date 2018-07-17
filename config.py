@@ -16,7 +16,7 @@ database = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="password",
-    database=""
+    database="telus"
 )
 
 usertable = "loginInfo"
