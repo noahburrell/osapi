@@ -68,23 +68,3 @@ def newSubnet(netID, cidr, debugging=False):
         print json.dumps(result, indent=4)
 
     return result
-
-
-def newPort(deviceID, netID, debugging=False):
-    data = \
-        {
-            "port": {
-                "admin_state_up": True,
-                "device_id": deviceID,
-                "network_id": netID,
-                "port_security_enabled": True
-            }
-        }
-
-    result = postData(config.location + ":9696", "/v2.0/ports", json.dumps(data), config.auth)
-
-    if debugging:
-        print json.dumps(data, indent=4)
-        print json.dumps(result, indent=4)
-
-    return result
