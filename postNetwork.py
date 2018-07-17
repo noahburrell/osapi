@@ -3,25 +3,44 @@ import json
 import config
 
 
-def newRouter(name, netID, snetID, ip, debugging=False):
-    data = \
-        {
-            "router": {
-                "tenant_id": config.tennantID,
-                "name": name,
-                "external_gateway_info": {
-                    "network_id": netID,
-                    "enable_snat": True,
-                    "external_fixed_ips": [
-                        {
-                            "ip_address": ip,
-                            "subnet_id": snetID
-                        }
-                    ]
-                },
-                "admin_state_up": True
+def newRouter(name, netID, snetID, ip=None, debugging=False):
+    if ip is None:
+        data = \
+            {
+                "router": {
+                    "tenant_id": config.tennantID,
+                    "name": name,
+                    "external_gateway_info": {
+                        "network_id": netID,
+                        "enable_snat": True,
+                        "external_fixed_ips": [
+                            {
+                                "subnet_id": snetID
+                            }
+                        ]
+                    },
+                    "admin_state_up": True
+                }
             }
-        }
+    else:
+        data = \
+            {
+                "router": {
+                    "tenant_id": config.tennantID,
+                    "name": name,
+                    "external_gateway_info": {
+                        "network_id": netID,
+                        "enable_snat": True,
+                        "external_fixed_ips": [
+                            {
+                                "ip_address": ip,
+                                "subnet_id": snetID
+                            }
+                        ]
+                    },
+                    "admin_state_up": True
+                }
+            }
 
     result = postData(config.location+":9696", "/v2.0/routers", json.dumps(data), config.auth)
     if debugging:

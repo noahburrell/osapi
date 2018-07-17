@@ -1,4 +1,6 @@
-# X-Auth-Token. To get this token run /opt/stack/scripts/getXAuthToken.sh located on the controller.
+import mysql.connector
+
+# X-Auth-Token.
 auth = \
     ''
 
@@ -10,9 +12,12 @@ tennantID = \
 location = \
     'localhost'
 
-mysqlInfo = [
-    "10.1.3.4", 3306, "root", ""
-]
+database = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="password",
+    database=""
+)
 
 usertable = "loginInfo"
 

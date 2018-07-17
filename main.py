@@ -1,27 +1,57 @@
+import argparse
 from admin import *
 from postNetwork import *
 from getNetwork import *
 from deleteNetwork import *
 from putNetwork import *
+import operations
 import config
+
+# INGEST PARAMETERS
+parser = argparse.ArgumentParser("Perform operations on a user's network/s.")
+
+parser.add_argument('-n', type=str, help='Create a new subnet with the specified name')
+parser.add_argument('-N', type=str, help='Used in conjunction with -n to override the network address (use CIDR notation')
+
+parser.add_argument('USER_ID', type=str, help='ID of user the operations will be preformed on')
+
+args = parser.parse_args()
+
+# uid = "1"  # Debugging
 
 # SETUP
 # Get X-Auth-Token
-config.auth = getToken("", "")
+config.auth = getToken("a67f74b73fd8478e8181189c9856446f", "labstack")
 
-# '''
 # Get public network ID and public-subnet subnet ID
 result = getSubnets([["name", "public-subnet"]])
-print json.dumps(result, indent=4)
+# print json.dumps(result, indent=4)  # Debugging
 
 pubsub = result['subnets'][0]['id']
 pubnet = result['subnets'][0]['network_id']
 
-routerResults = []
-networkResults = []
-subnetResults = []
-portResults = []
+# Make sure the user has a vRouter, as one will be required to do any further.
+# If the user does not have a vRouter, try to create one. If one cannot be created, raise an error
+# This function will also raise an error if the uid specified cannot be found
+print "Check user has a vRouter:",
+routerID = operations.checkRouter(args.USER_ID)
+if routerID is None:
+    print "[FALSE]"
+    routerID = operations.createRouter(args.USER_ID, pubnet, pubsub)
+    if routerID is None:
+        raise ValueError('User does not have a router and one was not able to be created. No further operations can be performed.')
+    else:
+        print "New vRouter successfully created"
+else:
+    print "[TRUE]"
 
+print "Router ID is: "+routerID
+
+# Attempt to create a network using the specified name and network address (if applicable)
+if args.n is not None:
+    result = operations.createNetwork(args.USER_ID, args.n, args.N)
+
+'''
 # CREATE NETWORK
 # Create Router
 routerResults.append(newRouter("USER-A", pubnet, pubsub, "10.80.1.131"))
@@ -43,9 +73,9 @@ portResults.append(newRouterPort(routerResults[0]['router']['id'], subnetResults
 print json.dumps(portResults, indent=4)
 # '''
 
-raw_input("Press Enter to continue...")
+# raw_input("Press Enter to continue...")
 
-# '''
+'''
 # DESTROY NETWORK (Reverse order of CREATE)
 # Get X-Auth-Token
 config.auth = getToken("a67f74b73fd8478e8181189c9856446f", "labstack")
