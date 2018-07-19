@@ -22,12 +22,12 @@ args = parser.parse_args()
 # args.USER_ID = "1"  # Debugging
 # args.n = "test-network"  # Debugging
 # args.N = "192.168.100.0/24"  # Debugging
-# args.d = "49"  # Debugging
+# args.d = "50"  # Debugging
 # args.debugging = False  # Debugging
 
 # SETUP
 # Get X-Auth-Token
-config.auth = getToken("a67f74b73fd8478e8181189c9856446f", "labstack")
+config.auth = getToken(config.userID, config.userPassword)
 
 # Get public network ID and public-subnet subnet ID
 result = getSubnets([["name", "public-subnet"]])
