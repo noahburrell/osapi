@@ -44,8 +44,8 @@ def newRouter(name, netID, snetID, ip=None, debugging=False):
 
     result = postData(config.location+":9696", "/v2.0/routers", json.dumps(data), config.auth)
     if debugging:
-        print json.dumps(data, indent=4)
-        print json.dumps(result, indent=4)
+        print "Request: "+json.dumps(data, indent=4)
+        print "Response: "+json.dumps(result, indent=4)
 
     return result
 
@@ -63,8 +63,8 @@ def newNetwork(name, debugging=False):
     result = postData(config.location+":9696", "/v2.0/networks", json.dumps(data), config.auth)
 
     if debugging:
-        print json.dumps(data, indent=4)
-        print json.dumps(result, indent=4)
+        print "Request: "+json.dumps(data, indent=4)
+        print "Response: "+json.dumps(result, indent=4)
 
     return result
 
@@ -83,7 +83,7 @@ def newSubnet(netID, cidr, debugging=False):
     result = postData(config.location+":9696", "/v2.0/subnets", json.dumps(data), config.auth)
 
     if debugging:
-        print json.dumps(data, indent=4)
-        print json.dumps(result, indent=4)
+        print "Request: "+json.dumps(data, indent=4)
+        print "Response: "+json.dumps(result, indent=4)
 
     return result

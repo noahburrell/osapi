@@ -11,7 +11,7 @@ def getSubnets(parameters, debugging=False):
 
     result = getData(config.location + ":9696", "/v2.0/subnets?", parametersText, config.auth)
     if debugging:
-        print json.dumps(result, indent=4)
+        print "Response to: /v2.0/subnets?" + parametersText + "\n" + json.dumps(result, indent=4)
 
     return result
 
@@ -24,6 +24,6 @@ def getPorts(parameters, debugging=False):
 
     result = getData(config.location + ":9696", "/v2.0/ports?", parametersText, config.auth)
     if debugging:
-        print json.dumps(result, indent=4)
+        print "Response to: /v2.0/ports?"+parametersText+"\n"+json.dumps(result, indent=4)
 
     return result
