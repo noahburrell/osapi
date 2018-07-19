@@ -14,3 +14,16 @@ def getSubnets(parameters, debugging=False):
         print json.dumps(result, indent=4)
 
     return result
+
+
+def getPorts(parameters, debugging=False):
+    parametersText = ""
+
+    for parameter in parameters:
+        parametersText = parametersText+parameter[0]+"="+parameter[1]+"&"
+
+    result = getData(config.location + ":9696", "/v2.0/ports?", parametersText, config.auth)
+    if debugging:
+        print json.dumps(result, indent=4)
+
+    return result
