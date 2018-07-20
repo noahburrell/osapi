@@ -151,27 +151,27 @@ def destroyNetwork(uid, subnetid, debugging=False):
 
     # Look up the subnet ID in subnet table and join on the ports table since the port needs to be deleted first (if one exists)
     # Also inner join the router table to lookup the uid to ensure the subnet being deleted is owned by the specified uid. The uid is just a sanity check
-    connection.execute("SELECT * FROM subnetTable INNER JOIN routerTable ON subnetTable.rid = routerTable.id LEFT OUTER JOIN portTable ON subnetTable.id = portTable.sid WHERE subnetTable.id = '" + subnetid + "' AND routerTable.uid = '"+uid+"'")
+    connection.execute("SELECT * FROM subnetTable INNER JOIN routerTable ON subnetTable.rid = routerTable.id LEFT OUTER JOIN portTable ON subnetTable.id = portTable.sid WHERE subnetTable.id = '" + str(subnetid) + "' AND routerTable.uid = '"+str(uid)+"'")
     results = connection.fetchone()
     if connection.rowcount is 0:
         raise ValueError('Subnet ID "' + subnetid + '" does not exist or the database cannot be accessed.')
     if debugging:
-        print "Get result where user ID="+uid+" and subnet ID="+subnetid+": "+json.dumps(results, indent=4)
+        print "Get result where user ID="+str(uid)+" and subnet ID="+str(subnetid)+": "+json.dumps(results, indent=4)
 
     # Delete port
     delPort(results['osrid'], results['ospid'], debugging)
-    connection.execute("DELETE FROM portTable WHERE sid='"+subnetid+"'")
+    connection.execute("DELETE FROM portTable WHERE sid='"+str(subnetid)+"'")
     if connection.rowcount is 0:
-        raise ValueError('Could not delete port with sid="' + subnetid + '". Does not exist or the database cannot be accessed.')
+        raise ValueError('Could not delete port with sid="' + str(subnetid) + '". Does not exist or the database cannot be accessed.')
     print "Port deleted: "+results['ospid']
     config.database.commit()
 
     # Delete subnet and parent network (contained in same DB table)
     delSubnet(results['ossubid'])
     delNetwork(results['osnetid'])
-    connection.execute("DELETE FROM subnetTable WHERE id='"+subnetid+"'")
+    connection.execute("DELETE FROM subnetTable WHERE id='"+str(subnetid)+"'")
     if connection.rowcount is 0:
-        raise ValueError('Could not delete subnet with id="' + subnetid + '". Does not exist or the database cannot be accessed.')
+        raise ValueError('Could not delete subnet with id="' + str(subnetid) + '". Does not exist or the database cannot be accessed.')
     print "Subnet deleted: "+results['ossubid']
     print "Network deleted: " + results['osnetid']
     config.database.commit()
