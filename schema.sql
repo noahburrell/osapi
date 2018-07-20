@@ -89,7 +89,7 @@ CREATE TABLE `passwordrecovery` (
   UNIQUE KEY `uid_2` (`uid`),
   KEY `uid` (`uid`),
   CONSTRAINT `passwordRecovery_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `loginInfo` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +112,7 @@ CREATE TABLE `portTable` (
   KEY `sid` (`sid`),
   CONSTRAINT `portTable_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `routerTable` (`id`),
   CONSTRAINT `portTable_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `subnetTable` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,9 +148,10 @@ CREATE TABLE `subnetTable` (
   `cidr` varchar(18) NOT NULL,
   `ossubid` varchar(36) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `ossubid` (`ossubid`),
   KEY `rid` (`rid`),
   CONSTRAINT `subnetTable_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `routerTable` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -162,4 +163,4 @@ CREATE TABLE `subnetTable` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-17 15:34:15
+-- Dump completed on 2018-07-20 13:06:47
