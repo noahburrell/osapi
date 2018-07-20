@@ -9,9 +9,10 @@ parser = argparse.ArgumentParser("Perform operations on a user's network/s.")
 parser.add_argument('-n', type=str, help='Create a new subnet with the specified name')
 parser.add_argument('-N', type=str, help='Optionally used in conjunction with -n to override the network address (use CIDR notation')
 parser.add_argument('-d', type=int, help='Destroy a network with the specified subnet ID')
-parser.add_argument('-vv', dest='debugging', action='store_true')
+parser.add_argument('--destroy-all', dest="destroyAll", action='store_true', help='Destroy all network services associated with the specified user ID')
+parser.add_argument('-vv', dest='debugging', action='store_true', help='Enable very verbose debugging')
 parser.add_argument('USER_ID', type=str, help='ID of user the operations will be preformed on')
-parser.set_defaults(debugging=False)
+parser.set_defaults(debugging=False, destroyAll=False)
 args = parser.parse_args()
 
 
@@ -57,3 +58,6 @@ if args.n is not None:
 # Attempt to destroy a network using the subnet id (as defined in our database, not the openstack id) if applicable
 if args.d is not None:
     operations.destroyNetwork(args.USER_ID, args.d, args.debugging)
+
+if args.destroyAll:
+    operations.destroyAllServices(args.USER_ID)

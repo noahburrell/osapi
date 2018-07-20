@@ -177,3 +177,25 @@ def destroyNetwork(uid, subnetid, debugging=False):
     config.database.commit()
 
     return
+
+
+def destroyAllServices(uid, debugging=False):
+    print "Tearing down all network services for user ID "+str(uid)
+    # Initiate a new SQL connection
+    connection = config.database.cursor(dictionary=True)
+
+    # Get a list of all subnets/networks this user owns. Destroy these first
+    connection.execute("SELECT * FROM routerTable INNER JOIN subnetTable ON routerTable.id = subnetTable.rid WHERE routerTable.uid = '"+str(uid)+"'")
+    results = connection.fetchall()
+    for result in results:
+        destroyNetwork(uid, result['id'], debugging)
+
+    # Get the user's router ID and destroy their router next
+    connection.execute("SELECT * FROM routerTable WHERE uid='"+str(uid)+"'")
+    result = connection.fetchone()
+    connection.execute("DELETE FROM routerTable WHERE uid='"+str(uid)+"'")
+    delRouter(result['osrid'])
+    config.database.commit()
+    print "Router deleted: "+result['osrid']
+
+    return
