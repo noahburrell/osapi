@@ -1,4 +1,3 @@
-
 from admin import *
 from postNetwork import *
 from getNetwork import *
@@ -157,6 +156,10 @@ def destroyNetwork(uid, subnetid, debugging=False):
         raise ValueError('Subnet ID "' + subnetid + '" does not exist or the database cannot be accessed.')
     if debugging:
         print "Get result where user ID="+str(uid)+" and subnet ID="+str(subnetid)+": "+json.dumps(results, indent=4)
+
+    # Remove devices associated with network
+    connection.execute("DELETE FROM " + config.devicetable + " WHERE sid = " +str(subnetid))
+    config.database.commit()
 
     # Delete port
     delPort(results['osrid'], results['ospid'], debugging)
