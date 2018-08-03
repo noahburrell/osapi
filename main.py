@@ -59,5 +59,6 @@ if args.n is not None:
 if args.d is not None:
     operations.destroyNetwork(args.USER_ID, args.d, args.debugging)
 
+# Attempt to destroy all services (ports, networks, routers) associated with a specified user ID
 if args.destroyAll:
     operations.destroyAllServices(args.USER_ID)
